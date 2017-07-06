@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.business.acceptor.dao.RechargeOrderMapper">
+  <resultMap id="BaseResultMap" type="com.business.acceptor.entity.RechargeOrder">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="order_no" jdbcType="VARCHAR" property="orderNo" />
+    <result column="business_type" jdbcType="INTEGER" property="businessType" />
+    <result column="merchant_order_no" jdbcType="VARCHAR" property="merchantOrderNo" />
+    <result column="merchant_account" jdbcType="VARCHAR" property="merchantAccount" />
+    <result column="extend_account" jdbcType="VARCHAR" property="extendAccount" />
+    <result column="recharge_account" jdbcType="VARCHAR" property="rechargeAccount" />
+    <result column="recharge_value" jdbcType="BIGINT" property="rechargeValue" />
+    <result column="recharge_num" jdbcType="BIGINT" property="rechargeNum" />
+    <result column="merchant_order_time" jdbcType="TIMESTAMP" property="merchantOrderTime" />
+    <result column="order_time" jdbcType="TIMESTAMP" property="orderTime" />
+    <result column="order_amount" jdbcType="BIGINT" property="orderAmount" />
+    <result column="pay_amount" jdbcType="BIGINT" property="payAmount" />
+    <result column="discount_amount" jdbcType="BIGINT" property="discountAmount" />
+    <result column="success_amount" jdbcType="BIGINT" property="successAmount" />
+    <result column="extend_param" jdbcType="VARCHAR" property="extendParam" />
+    <result column="business_attach" jdbcType="VARCHAR" property="businessAttach" />
+    <result column="order_detail" jdbcType="VARCHAR" property="orderDetail" />
+    <result column="pay_state" jdbcType="INTEGER" property="payState" />
+    <result column="pay_time" jdbcType="TIMESTAMP" property="payTime" />
+    <result column="order_state" jdbcType="INTEGER" property="orderState" />
+    <result column="refund_amount" jdbcType="BIGINT" property="refundAmount" />
+    <result column="refund_state" jdbcType="INTEGER" property="refundState" />
+    <result column="refund_time" jdbcType="TIMESTAMP" property="refundTime" />
+    <result column="rebate_type" jdbcType="INTEGER" property="rebateType" />
+    <result column="rebate_amount" jdbcType="BIGINT" property="rebateAmount" />
+    <result column="rebate_state" jdbcType="TINYINT" property="rebateState" />
+    <result column="rebate_time" jdbcType="TIMESTAMP" property="rebateTime" />
+    <result column="customer_ip" jdbcType="VARCHAR" property="customerIp" />
+    <result column="merchant_ip" jdbcType="VARCHAR" property="merchantIp" />
+    <result column="notify_url" jdbcType="VARCHAR" property="notifyUrl" />
+    <result column="attach" jdbcType="VARCHAR" property="attach" />
+    <result column="src_platform" jdbcType="VARCHAR" property="srcPlatform" />
+    <result column="notify_times" jdbcType="INTEGER" property="notifyTimes" />
+    <result column="notify_interval" jdbcType="VARCHAR" property="notifyInterval" />
+    <result column="notify_first_time" jdbcType="TIMESTAMP" property="notifyFirstTime" />
+    <result column="notify_latest_time" jdbcType="TIMESTAMP" property="notifyLatestTime" />
+    <result column="notify_state" jdbcType="INTEGER" property="notifyState" />
+    <result column="end_time" jdbcType="TIMESTAMP" property="endTime" />
+    <result column="correct_notify_url" jdbcType="VARCHAR" property="correctNotifyUrl" />
+    <result column="correct_state" jdbcType="INTEGER" property="correctState" />
+    <result column="correct_amount" jdbcType="BIGINT" property="correctAmount" />
+    <result column="correct_time" jdbcType="TIMESTAMP" property="correctTime" />
+    <result column="correct_end_time" jdbcType="TIMESTAMP" property="correctEndTime" />
+    <result column="discount_province_code" jdbcType="VARCHAR" property="discountProvinceCode" />
+    <result column="discount_rate" jdbcType="DOUBLE" property="discountRate" />
+  </resultMap>
+</mapper>

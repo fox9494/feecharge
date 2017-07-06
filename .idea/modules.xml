@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/acceptor/acceptor.iml" filepath="$PROJECT_DIR$/acceptor/acceptor.iml" />
+      <module fileurl="file://$PROJECT_DIR$/baseservice/api/api.iml" filepath="$PROJECT_DIR$/baseservice/api/api.iml" />
+      <module fileurl="file://$PROJECT_DIR$/baseservice/baseservice.iml" filepath="$PROJECT_DIR$/baseservice/baseservice.iml" />
+      <module fileurl="file://$PROJECT_DIR$/baseservice/chargeservice/chargeservice.iml" filepath="$PROJECT_DIR$/baseservice/chargeservice/chargeservice.iml" />
+      <module fileurl="file://$PROJECT_DIR$/delivery/delivery.iml" filepath="$PROJECT_DIR$/delivery/delivery.iml" />
+      <module fileurl="file://$PROJECT_DIR$/feecharge.iml" filepath="$PROJECT_DIR$/feecharge.iml" />
+      <module fileurl="file://$PROJECT_DIR$/generator-mybatis/generator-mybatis.iml" filepath="$PROJECT_DIR$/generator-mybatis/generator-mybatis.iml" />
+    </modules>
+  </component>
+</project>
