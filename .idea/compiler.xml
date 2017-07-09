@@ -24,7 +24,7 @@
         <processorPath useClasspath="true" />
         <module name="acceptor" />
         <module name="api" />
-        <module name="chargeservice" />
+        <module name="charge-dubbo" />
         <module name="delivery" />
         <module name="generator-mybatis" />
       </profile>
@@ -33,6 +33,7 @@
       <module name="acceptor" target="1.5" />
       <module name="api" target="1.5" />
       <module name="baseservice" target="1.5" />
+      <module name="charge-dubbo" target="1.5" />
       <module name="chargeservice" target="1.5" />
       <module name="delivery" target="1.5" />
       <module name="feecharge" target="1.5" />

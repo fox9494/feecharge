@@ -13,8 +13,8 @@
     <artifactId>baseservice</artifactId>
     <packaging>pom</packaging>
     <modules>
-        <module>chargeservice</module>
         <module>api</module>
+        <module>charge-dubbo</module>
     </modules>
 
 

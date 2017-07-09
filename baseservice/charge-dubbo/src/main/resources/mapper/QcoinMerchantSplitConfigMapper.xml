@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.business.chargeservice.dao.QcoinMerchantSplitConfigMapper">
+  <resultMap id="BaseResultMap" type="com.business.api.entity.QcoinMerchantSplitConfig">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="mer_account" jdbcType="VARCHAR" property="merAccount" />
+    <result column="split_state" jdbcType="INTEGER" property="splitState" />
+    <result column="tencent_esales" jdbcType="INTEGER" property="tencentEsales" />
+    <result column="allow_illegal_ip" jdbcType="INTEGER" property="allowIllegalIp" />
+    <result column="trust_ip" jdbcType="INTEGER" property="trustIp" />
+    <result column="allow_illegal_account" jdbcType="INTEGER" property="allowIllegalAccount" />
+    <result column="allow_phone_account" jdbcType="INTEGER" property="allowPhoneAccount" />
+    <result column="allow_repeat_account" jdbcType="INTEGER" property="allowRepeatAccount" />
+    <result column="save_trust_ip_province" jdbcType="VARCHAR" property="saveTrustIpProvince" />
+    <result column="allow_loss" jdbcType="INTEGER" property="allowLoss" />
+    <result column="default_discount_province" jdbcType="VARCHAR" property="defaultDiscountProvince" />
+  </resultMap>
+</mapper>

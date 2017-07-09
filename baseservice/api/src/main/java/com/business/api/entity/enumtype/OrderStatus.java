@@ -5,16 +5,21 @@ package com.business.api.entity.enumtype;
  */
 public enum OrderStatus {
 
-    SUCCESS("1"),
-    FAIL("0");
+    //订单取消
+    CANCLE(-1),
+    //待处理
+    READY(0),
+    //充值中
+    PROCESSING(1);
 
-    private String value;
 
-    OrderStatus(String value) {
+    private Integer value;
+
+    OrderStatus(Integer value) {
         this.value=value;
     }
 
-    public String getValue() {
+    public Integer getValue() {
         return value;
     }
 }

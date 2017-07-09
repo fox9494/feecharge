@@ -1,10 +1,9 @@
 package com.business.acceptor.controller;
 
-import com.business.acceptor.entity.RechargeOrder;
-import com.business.acceptor.entity.enumtype.RequestType;
-import com.business.acceptor.service.PlaceOrderService;
-import com.business.acceptor.vo.PlaceOrderRequest;
+import com.business.acceptor.service.ProcessOrderService;
 import com.business.acceptor.vo.PlaceOrderResponse;
+import com.business.api.entity.enumtype.RequestType;
+import com.business.api.vo.PlaceOrderRequest;
 import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,15 +22,15 @@ public class PlaceOrderController {
     private static Logger logger = LoggerFactory.getLogger(PlaceOrderController.class);
 
     @Autowired
-    private PlaceOrderService placeOrderService;
+    private ProcessOrderService processOrderService;
 
     @ApiOperation(value = "下单接口操作",notes = "")
     @RequestMapping(value = "/orders/place",method = RequestMethod.POST)
     public PlaceOrderResponse placeOrder(@RequestBody PlaceOrderRequest placeOrderRequest){
         logger.info("请求订单参数,entity:{}",placeOrderRequest.toString());
         //记录日志
-        placeOrderService.saveLog(RequestType.PLACEORDER,placeOrderRequest.toString());
-        placeOrderService.generateOrder(placeOrderRequest);
+        processOrderService.saveLog(RequestType.PLACEORDER,placeOrderRequest.toString());
+        processOrderService.handleOrder(placeOrderRequest);
 
         return null;
     }

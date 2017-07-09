@@ -1,6 +1,7 @@
 package com.business.api.service;
 
 import com.business.api.entity.RechargeOrder;
+import com.business.api.entity.enumtype.RequestType;
 import com.business.api.vo.PlaceOrderRequest;
 
 /**
@@ -14,4 +15,6 @@ public interface PlaceOrderService {
      * @return
      */
     public RechargeOrder processOrder(PlaceOrderRequest placeOrderRequest);
+
+    public void saveLog(RequestType requestType, String data);
 }

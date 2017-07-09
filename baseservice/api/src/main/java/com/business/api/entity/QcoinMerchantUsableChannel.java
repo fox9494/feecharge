@@ -15,8 +15,8 @@ public class QcoinMerchantUsableChannel extends BaseEntity{
     /**
      * 渠道编号
      */
-    @Column(name = "channel_no")
-    private String channelNo;
+    @Column(name = "channel_id")
+    private Integer channelId;
 
     /**
      * 部分成功是否走下一渠道：0不走；1要走
@@ -90,22 +90,12 @@ public class QcoinMerchantUsableChannel extends BaseEntity{
         this.merAccount = merAccount;
     }
 
-    /**
-     * 获取渠道编号
-     *
-     * @return channel_no - 渠道编号
-     */
-    public String getChannelNo() {
-        return channelNo;
+    public Integer getChannelId() {
+        return channelId;
     }
 
-    /**
-     * 设置渠道编号
-     *
-     * @param channelNo 渠道编号
-     */
-    public void setChannelNo(String channelNo) {
-        this.channelNo = channelNo;
+    public void setChannelId(Integer channelId) {
+        this.channelId = channelId;
     }
 
     /**

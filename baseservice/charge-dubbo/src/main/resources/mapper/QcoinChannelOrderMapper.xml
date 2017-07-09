@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.business.chargeservice.dao.QcoinChannelOrderMapper">
+  <resultMap id="BaseResultMap" type="com.business.api.entity.QcoinChannelOrder">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="channel_order_no" jdbcType="VARCHAR" property="channelOrderNo" />
+    <result column="order_no" jdbcType="VARCHAR" property="orderNo" />
+    <result column="mer_account" jdbcType="VARCHAR" property="merAccount" />
+    <result column="mer_order_no" jdbcType="VARCHAR" property="merOrderNo" />
+    <result column="channel_id" jdbcType="INTEGER" property="channelId" />
+    <result column="partner_order_no" jdbcType="VARCHAR" property="partnerOrderNo" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="recharge_amount" jdbcType="BIGINT" property="rechargeAmount" />
+    <result column="success_amount" jdbcType="BIGINT" property="successAmount" />
+    <result column="province_code" jdbcType="VARCHAR" property="provinceCode" />
+    <result column="qq" jdbcType="VARCHAR" property="qq" />
+    <result column="order_state" jdbcType="INTEGER" property="orderState" />
+    <result column="handle_time" jdbcType="TIMESTAMP" property="handleTime" />
+    <result column="end_time" jdbcType="TIMESTAMP" property="endTime" />
+    <result column="channel_result" jdbcType="VARCHAR" property="channelResult" />
+    <result column="channel_state" jdbcType="VARCHAR" property="channelState" />
+    <result column="notify_state" jdbcType="INTEGER" property="notifyState" />
+    <result column="ip" jdbcType="VARCHAR" property="ip" />
+    <result column="allow_delay" jdbcType="INTEGER" property="allowDelay" />
+    <result column="fixed_ip" jdbcType="VARCHAR" property="fixedIp" />
+    <result column="discount_rate" jdbcType="DOUBLE" property="discountRate" />
+  </resultMap>
+</mapper>

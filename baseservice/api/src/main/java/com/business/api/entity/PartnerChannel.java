@@ -6,11 +6,6 @@ import javax.persistence.Table;
 @Table(name = "partner_channel")
 public class PartnerChannel extends BaseEntity{
 
-    /**
-     * 渠道编号，插入时自增
-     */
-    @Column(name = "channel_id")
-    private Integer channelId;
 
     /**
      * 业务编号
@@ -92,23 +87,6 @@ public class PartnerChannel extends BaseEntity{
     private String remark;
 
 
-    /**
-     * 获取渠道编号，插入时自增
-     *
-     * @return channel_id - 渠道编号，插入时自增
-     */
-    public Integer getChannelId() {
-        return channelId;
-    }
-
-    /**
-     * 设置渠道编号，插入时自增
-     *
-     * @param channelId 渠道编号，插入时自增
-     */
-    public void setChannelId(Integer channelId) {
-        this.channelId = channelId;
-    }
 
     /**
      * 获取业务编号

@@ -1,7 +1,8 @@
 package com.business.acceptor.vo;
 
-import com.business.acceptor.entity.enumtype.OrderStatus;
-import com.business.acceptor.entity.enumtype.OrderType;
+
+import com.business.api.entity.enumtype.OrderStatus;
+import com.business.api.entity.enumtype.OrderType;
 
 import java.util.Date;
 

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.business.chargeservice.dao.MerchantAccountInfoMapper">
+  <resultMap id="BaseResultMap" type="com.business.api.entity.MerchantAccountInfo">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="merchant_account" jdbcType="VARCHAR" property="merchantAccount" />
+    <result column="type" jdbcType="TINYINT" property="type" />
+    <result column="balance" jdbcType="BIGINT" property="balance" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="create_by" jdbcType="VARCHAR" property="createBy" />
+    <result column="update_by" jdbcType="VARCHAR" property="updateBy" />
+  </resultMap>
+
+  <sql id="main_columns">
+    id,
+    merchant_account,
+    type,
+    balance,
+    create_time,
+    update_time,
+    create_by,
+    update_by
+  </sql>
+
+  <select id="selectBy" resultMap="BaseResultMap">
+      select <include refid="main_columns"></include> from merchant_account_info
+    where merchant_account = #{merchantAccount} for UPDATE
+  </select>
+
+  <update id="updateBalance">
+      update merchant_account_info SET balance = balance + #{balance}
+      where merchant_account=#{merchantAccount}
+  </update>
+</mapper>

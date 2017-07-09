@@ -1,11 +1,12 @@
 package com.business.api.vo;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * Created by chenll on 2017/7/5.
  */
-public class PlaceOrderRequest extends BaseRequest{
+public class PlaceOrderRequest extends BaseRequest implements Serializable{
 
     private String merchantAccount;
 
