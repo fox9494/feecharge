@@ -9,8 +9,12 @@ public enum OrderStatus {
     CANCLE(-1),
     //待处理
     READY(0),
+    //成功
+    SUCCESS(1),
+    //失败
+    FAIL(2),
     //充值中
-    PROCESSING(1);
+    PROCESSING(3);
 
 
     private Integer value;

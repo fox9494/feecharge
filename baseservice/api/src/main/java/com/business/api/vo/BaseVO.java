@@ -5,7 +5,7 @@ import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 /**
  * Created by chenll on 2017/7/5.
  */
-public class BaseRequest {
+public class BaseVO {
 
     @Override
     public String toString() {

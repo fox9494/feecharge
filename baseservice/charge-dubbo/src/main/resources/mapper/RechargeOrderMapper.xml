@@ -30,11 +30,7 @@
     <result column="refund_state" jdbcType="INTEGER" property="refundState" />
     <result column="refund_time" jdbcType="TIMESTAMP" property="refundTime" />
     <result column="rebate_type" jdbcType="INTEGER" property="rebateType" />
-    <result column="rebate_amount" jdbcType="BIGINT" property="rebateAmount" />
-    <result column="rebate_state" jdbcType="TINYINT" property="rebateState" />
-    <result column="rebate_time" jdbcType="TIMESTAMP" property="rebateTime" />
     <result column="customer_ip" jdbcType="VARCHAR" property="customerIp" />
-    <result column="merchant_ip" jdbcType="VARCHAR" property="merchantIp" />
     <result column="notify_url" jdbcType="VARCHAR" property="notifyUrl" />
     <result column="attach" jdbcType="VARCHAR" property="attach" />
     <result column="src_platform" jdbcType="VARCHAR" property="srcPlatform" />

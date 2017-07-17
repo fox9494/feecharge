@@ -71,6 +71,15 @@ public class QcoinMerchantUsableChannel extends BaseEntity{
     @Column(name = "allow_province")
     private String allowProvince;
 
+    private Integer orderSort;
+
+    public Integer getOrderSort() {
+        return orderSort;
+    }
+
+    public void setOrderSort(Integer orderSort) {
+        this.orderSort = orderSort;
+    }
 
     /**
      * 获取商户编号

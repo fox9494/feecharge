@@ -5,6 +5,8 @@ import org.apache.kafka.clients.consumer.Consumer;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.springframework.util.SerializationUtils;
 
+import java.util.concurrent.CyclicBarrier;
+
 /**
  * Created by chenll on 2017/7/9.
  */
@@ -21,5 +23,6 @@ public class Worker implements Runnable {
 
         RechargeOrder rechargeOrder = (RechargeOrder) SerializationUtils.deserialize(consumerRecord.value());
         System.out.println("consumerRecord = " + rechargeOrder.toString());
+
     }
 }

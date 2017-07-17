@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.business.dubbo.charge.dao.IpAddressMapper">
+  <resultMap id="BaseResultMap" type="com.business.api.entity.IpAddress">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="ip" jdbcType="VARCHAR" property="ip" />
+    <result column="operator_name" jdbcType="VARCHAR" property="operatorName" />
+    <result column="province_code" jdbcType="VARCHAR" property="provinceCode" />
+    <result column="province_name" jdbcType="VARCHAR" property="provinceName" />
+    <result column="city_code" jdbcType="VARCHAR" property="cityCode" />
+    <result column="city_name" jdbcType="VARCHAR" property="cityName" />
+    <result column="location" jdbcType="VARCHAR" property="location" />
+    <result column="add_time" jdbcType="TIMESTAMP" property="addTime" />
+  </resultMap>
+</mapper>

@@ -24,9 +24,11 @@ public class QcoinChannelService {
      * @param channelId
      * @return
      */
-    public List<QcoinMerchantUsableChannel> findBy(String merchantAccount, String channelId){
+    public List<QcoinMerchantUsableChannel> findBy(String merchantAccount, String channelId,Integer state){
         Example example = new Example(QcoinMerchantUsableChannel.class);
-        example.createCriteria().andEqualTo("merAccount",merchantAccount).andEqualTo("channelNo",channelId);
+        example.setOrderByClause("orderSort");
+        example.createCriteria().andEqualTo("merAccount",merchantAccount).andEqualTo("channelNo",channelId).
+                andEqualTo("state",state);
         return qcoinMerchantUsableChannelMapper.selectByExample(example);
     }
 }

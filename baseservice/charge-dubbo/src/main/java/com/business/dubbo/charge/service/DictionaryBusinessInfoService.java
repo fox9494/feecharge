@@ -1,7 +1,7 @@
 package com.business.dubbo.charge.service;
 
-import com.business.api.entity.QcoinBlackList;
-import com.business.dubbo.charge.dao.QcoinBlackListMapper;
+import com.business.api.entity.DictionaryBusinessInfo;
+import com.business.dubbo.charge.dao.DictionaryBusinessInfoMapper;
 import org.apache.ibatis.exceptions.TooManyResultsException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -13,15 +13,15 @@ import java.util.List;
  * Created by chenll on 2017/7/5.
  */
 @Component
-public class QcoinBlackListServiceImpl {
+public class DictionaryBusinessInfoService {
 
     @Autowired
-    private QcoinBlackListMapper qcoinBlackListMapper;
+    private DictionaryBusinessInfoMapper dictionaryBusinessInfoMapper;
 
-    public QcoinBlackList findByNumber(String qqNumber){
-        Example example = new Example(QcoinBlackList.class);
-        example.createCriteria().andEqualTo("qqNumber",qqNumber);
-        List<QcoinBlackList> list = qcoinBlackListMapper.selectByExample(example);
+    public DictionaryBusinessInfo findByType(Integer type){
+        Example example = new Example(DictionaryBusinessInfo.class);
+        example.createCriteria().andEqualTo("type",type);
+        List<DictionaryBusinessInfo> list = dictionaryBusinessInfoMapper.selectByExample(example);
         if ( list.size()==1){
             return list.get(0);
         }else if (list.size() > 1){
@@ -29,5 +29,4 @@ public class QcoinBlackListServiceImpl {
         }
         return null;
     }
-
 }

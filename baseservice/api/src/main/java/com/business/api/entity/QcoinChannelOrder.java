@@ -22,8 +22,8 @@ public class QcoinChannelOrder extends BaseEntity{
     /**
      * 商户账号
      */
-    @Column(name = "mer_account")
-    private String merAccount;
+    @Column(name = "merchant_account")
+    private String merchantAccount;
 
     /**
      * 商户订单号
@@ -168,22 +168,12 @@ public class QcoinChannelOrder extends BaseEntity{
         this.orderNo = orderNo;
     }
 
-    /**
-     * 获取商户账号
-     *
-     * @return mer_account - 商户账号
-     */
-    public String getMerAccount() {
-        return merAccount;
+    public String getMerchantAccount() {
+        return merchantAccount;
     }
 
-    /**
-     * 设置商户账号
-     *
-     * @param merAccount 商户账号
-     */
-    public void setMerAccount(String merAccount) {
-        this.merAccount = merAccount;
+    public void setMerchantAccount(String merchantAccount) {
+        this.merchantAccount = merchantAccount;
     }
 
     /**

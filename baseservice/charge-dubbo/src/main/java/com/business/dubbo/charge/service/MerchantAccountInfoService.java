@@ -12,7 +12,7 @@ import java.util.List;
  * Created by chenll on 2017/7/6.
  */
 @Component
-public class MerchantAccountInfoServiceImpl {
+public class MerchantAccountInfoService {
 
     @Autowired
     private MerchantAccountInfoMapper merchantAccountInfoMapper;

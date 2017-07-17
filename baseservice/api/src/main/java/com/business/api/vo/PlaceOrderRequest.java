@@ -6,7 +6,7 @@ import java.util.Date;
 /**
  * Created by chenll on 2017/7/5.
  */
-public class PlaceOrderRequest extends BaseRequest implements Serializable{
+public class PlaceOrderRequest extends BaseVO implements Serializable{
 
     private String merchantAccount;
 
@@ -20,8 +20,10 @@ public class PlaceOrderRequest extends BaseRequest implements Serializable{
 
     private String chargeAccount;
 
+    //面额
     private Long charegeUnitValue;
 
+    //
     private Long chargeNumber;
 
     private String expandParam;

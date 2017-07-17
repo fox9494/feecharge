@@ -6,7 +6,7 @@ app:
   name: acceptor
 
 server:
-  port: 8081
+  port: 8080
 
 spring:
     dubbo:

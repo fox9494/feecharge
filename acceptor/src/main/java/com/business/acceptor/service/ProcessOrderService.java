@@ -3,7 +3,7 @@ package com.business.acceptor.service;
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.business.acceptor.producer.OrderProducer;
 import com.business.api.entity.enumtype.RequestType;
-import com.business.api.service.PlaceOrderService;
+import com.business.api.service.PlaceOrderApiService;
 import com.business.api.vo.PlaceOrderRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,14 +24,14 @@ public class ProcessOrderService {
     private OrderProducer orderProducer;
 
     @Reference
-    private PlaceOrderService placeOrderService;
+    private PlaceOrderApiService placeOrderApiService;
 
     public void saveLog(RequestType requestType, String data){
-        placeOrderService.saveLog(requestType,data);
+        placeOrderApiService.saveLog(requestType,data);
     }
 
     public void handleOrder(PlaceOrderRequest placeOrderRequest){
-        com.business.api.entity.RechargeOrder rechargeOrder = placeOrderService.processOrder(placeOrderRequest);
+        com.business.api.entity.RechargeOrder rechargeOrder = placeOrderApiService.processOrder(placeOrderRequest);
 
         //发kafka
         orderProducer.send(OrderProducer.TOPIC_ORDER,rechargeOrder);

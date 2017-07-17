@@ -10,8 +10,8 @@ public class QcoinRebateConfig extends BaseEntity {
     /**
      * 商户账号
      */
-    @Column(name = "mer_account")
-    private String merAccount;
+    @Column(name = "merchant_account")
+    private String merchantAccount;
 
     /**
      * 省份编号
@@ -31,22 +31,12 @@ public class QcoinRebateConfig extends BaseEntity {
     private Integer state;
 
 
-    /**
-     * 获取商户账号
-     *
-     * @return mer_account - 商户账号
-     */
-    public String getMerAccount() {
-        return merAccount;
+    public String getMerchantAccount() {
+        return merchantAccount;
     }
 
-    /**
-     * 设置商户账号
-     *
-     * @param merAccount 商户账号
-     */
-    public void setMerAccount(String merAccount) {
-        this.merAccount = merAccount;
+    public void setMerchantAccount(String merchantAccount) {
+        this.merchantAccount = merchantAccount;
     }
 
     /**

@@ -17,5 +17,6 @@
     <result column="split_rule" jdbcType="VARCHAR" property="splitRule" />
     <result column="allow_unsure_province" jdbcType="INTEGER" property="allowUnsureProvince" />
     <result column="allow_province" jdbcType="VARCHAR" property="allowProvince" />
+    <result column="order_sort" jdbcType="INTEGER" property="orderSort" />
   </resultMap>
 </mapper>

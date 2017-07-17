@@ -3,52 +3,74 @@ package com.business.dubbo.charge.service;
 import com.business.api.entity.*;
 import com.business.api.entity.enumtype.AccountStatus;
 import com.business.api.entity.enumtype.RequestType;
-import com.business.api.exceptions.AccountFrozenException;
-import com.business.api.exceptions.AccountNoBusinessException;
-import com.business.api.exceptions.MerchantNoMoneyException;
-import com.business.api.exceptions.MerchantNotExistException;
+import com.business.api.entity.enumtype.StatusType;
+import com.business.api.exceptions.*;
 import com.business.api.vo.PlaceOrderRequest;
+import com.business.dubbo.charge.cache.BusinessTypeLocalCache;
 import com.business.dubbo.charge.dao.AccountFundFlowMapper;
 import com.business.dubbo.charge.dao.RechargeOrderMapper;
 import com.business.dubbo.charge.dao.RequestLogMapper;
+import com.business.dubbo.charge.utils.IDGenerator;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
-import java.util.UUID;
+import java.math.BigDecimal;
+import java.math.MathContext;
+import java.math.RoundingMode;
+import java.util.*;
+import java.util.concurrent.ExecutionException;
 
 /**
  * Created by chenll on 2017/6/24.
  * 下单业务
  */
 @Component
-public class PlaceOrderServiceImpl{
+public class PlaceOrderService {
 
-    private static Logger logger = LoggerFactory.getLogger(PlaceOrderServiceImpl.class);
+    private static Logger logger = LoggerFactory.getLogger(PlaceOrderService.class);
 
     @Autowired
     private RequestLogMapper requestLogMapper;
 
     @Autowired
-    private MerchantInfoServiceImpl merchantInfoService;
+    private MerchantInfoService merchantInfoService;
 
     @Autowired
-    private MerchantApplyBusinessServiceImpl merchantApplyBusinessService;
+    private MerchantApplyBusinessService merchantApplyBusinessService;
 
     @Autowired
-    private QcoinBlackListServiceImpl qcoinBlackListService;
+    private QcoinBlackListService qcoinBlackListService;
 
     @Autowired
     private RechargeOrderMapper rechargeOrderMapper;
 
     @Autowired
-    private MerchantAccountInfoServiceImpl merchantAccountInfoService;
+    private MerchantAccountInfoService merchantAccountInfoService;
 
     @Autowired
     private AccountFundFlowMapper accountFundFlowMapper;
+
+    @Autowired
+    private RechargeOrderService rechargeOrderServiceImpl;
+
+    @Autowired
+    private BusinessTypeLocalCache businessTypeLocalCache;
+
+    @Autowired
+    private IpAddressService ipAddressService;
+
+    @Autowired
+    private QcoinRebateConfigService qcoinRebateConfigServiceImp;
+
+
+    private final static int NOTIFYNUM=5;
+
+
+    private final static List<Integer> BUSINESSTYPES = Arrays.asList(10,11,12,13);
 
 
     public void saveLog(RequestType requestType, String data){
@@ -79,23 +101,45 @@ public class PlaceOrderServiceImpl{
         if (AccountStatus.FROZEN.getValue().byteValue() == merchantApplyBusiness.getState().byteValue()){
             throw new AccountNoBusinessException();
         }
+        //验证业务类型是否存在
+        if (!BUSINESSTYPES.contains(placeOrderRequest.getBusinessType())){
+            throw new BusinessTypeNotExistException();
+        }
+
+        //验证 placeOrderRequest.getMerchantOrderNo()在表中是否存在重复的
+        int OrderNoNum = rechargeOrderServiceImpl.verifyMercantOrderNo(placeOrderRequest.getMerchantAccount(),placeOrderRequest.getMerchantOrderNo());
+        if (OrderNoNum > 0){
+            throw new DuplicateMerchantOrderNOException();
+        }
+        //面额和数量对数字验证
+        if (!NumberUtils.isNumber(String.valueOf(placeOrderRequest.getCharegeUnitValue()))){
+            throw new ParamNotNumberException();
+        }
+        if (!NumberUtils.isNumber(String.valueOf(placeOrderRequest.getChargeNumber()))){
+            throw new ParamNotNumberException();
+        }
 
         QcoinBlackList qqBlack = qcoinBlackListService.findByNumber(placeOrderRequest.getChargeAccount());
+        if (qqBlack!=null && qqBlack.getState().byteValue()== StatusType.NORMAL.getValue()){
+            throw new QQInBlackListException();
+        }
 
         //生成接单表
         RechargeOrder rechargeOrder = generatorRechargeOrder(placeOrderRequest);
-        rechargeOrderMapper.insert(rechargeOrder);
+
         MerchantAccountInfo merchantAccountInfo = merchantAccountInfoService.findByAccount(placeOrderRequest.getMerchantAccount());
         if (merchantAccountInfo==null){
             throw new MerchantNotExistException();
         }
-        if (merchantAccountInfo.getBalance()<=0){
+        if (merchantAccountInfo.getBalance() < rechargeOrder.getDiscountAmount()){
             throw new MerchantNoMoneyException();
         }
-        //TODO 金额计算没有打折
-        Long amount = placeOrderRequest.getCharegeUnitValue()*placeOrderRequest.getChargeNumber();
-        merchantAccountInfoService.updateBalance(placeOrderRequest.getMerchantAccount(),-amount);
-        this.addAcountFundFlow(placeOrderRequest,rechargeOrder,merchantAccountInfo,amount);
+        merchantAccountInfoService.updateBalance(placeOrderRequest.getMerchantAccount(),-rechargeOrder.getDiscountAmount());
+        rechargeOrder.setPayState(13);
+        rechargeOrder.setPayTime(new Date());
+        rechargeOrderMapper.insert(rechargeOrder);
+
+        this.addAcountFundFlow(placeOrderRequest,rechargeOrder,merchantAccountInfo,rechargeOrder.getDiscountAmount());
 
         logger.info("商户:{} 接单成功,orderNo:{}",placeOrderRequest.getMerchantAccount(),rechargeOrder.getOrderNo());
         return rechargeOrder;
@@ -123,7 +167,7 @@ public class PlaceOrderServiceImpl{
 
     private RechargeOrder generatorRechargeOrder(PlaceOrderRequest placeOrderRequest){
         RechargeOrder rechargeOrder = new RechargeOrder();
-        rechargeOrder.setOrderNo(UUID.randomUUID().toString());//暂时用uuid
+        rechargeOrder.setOrderNo(IDGenerator.getInstance().getID());
         rechargeOrder.setBusinessType(placeOrderRequest.getBusinessType());
         rechargeOrder.setMerchantOrderNo(placeOrderRequest.getMerchantOrderNo());
         rechargeOrder.setMerchantAccount(placeOrderRequest.getMerchantAccount());
@@ -133,32 +177,57 @@ public class PlaceOrderServiceImpl{
         rechargeOrder.setRechargeNum(placeOrderRequest.getChargeNumber());
         rechargeOrder.setMerchantOrderTime(placeOrderRequest.getMerchantRequestTime());
         rechargeOrder.setOrderTime(new Date());
-        //TODO 暂时这样计算
-        rechargeOrder.setOrderAmount(placeOrderRequest.getCharegeUnitValue()*placeOrderRequest.getChargeNumber());
-        rechargeOrder.setPayAmount(0L);
-        rechargeOrder.setDiscountAmount(0L);
+
+        rechargeOrder.setOrderAmount(placeOrderRequest.getCharegeUnitValue()*placeOrderRequest.getChargeNumber()*1000);
+        rechargeOrder.setPayAmount(placeOrderRequest.getCharegeUnitValue()*placeOrderRequest.getChargeNumber()*1000);
+
+        //根据customeip去查ip对应的省份，再根据省份和商户号查qcoin_rebate_config
+        IpAddress ipAddress = ipAddressService.findBy(placeOrderRequest.getCustomerIp());
+        QcoinRebateConfig qcoinRebateConfig = null;
+        if (ipAddress == null){//取不到ip的身份默认用四川
+            qcoinRebateConfig = qcoinRebateConfigServiceImp.findBy(placeOrderRequest.getMerchantAccount(), "028");
+        }else{
+            qcoinRebateConfig = qcoinRebateConfigServiceImp.findBy(placeOrderRequest.getMerchantAccount(), ipAddress.getProvinceCode());
+        }
+        Double discountRate = qcoinRebateConfig.getDiscountRate();
+        BigDecimal result = new BigDecimal(placeOrderRequest.getCharegeUnitValue()).
+                multiply(new BigDecimal(placeOrderRequest.getChargeNumber())) .
+                multiply(new BigDecimal(discountRate,new MathContext(3, RoundingMode.HALF_UP))) ;
+        result = result.multiply(new BigDecimal(1000));
+        rechargeOrder.setDiscountAmount(result.longValue());
+
         rechargeOrder.setSuccessAmount(0L);
         rechargeOrder.setExtendParam(placeOrderRequest.getExpandParam());
         rechargeOrder.setBusinessAttach("");
-        rechargeOrder.setOrderDetail("");
-//         rechargeOrder.setPayState();
+        rechargeOrder.setOrderDetail(getDesc(placeOrderRequest.getBusinessType(),placeOrderRequest.getCharegeUnitValue(),placeOrderRequest.getChargeNumber()));//组装中文描述
+         rechargeOrder.setPayState(0);
 //        rechargeOrder.setPayTime();
         rechargeOrder.setOrderState(0);
         rechargeOrder.setRefundAmount(0L);
         rechargeOrder.setRefundState(0);
-
-        rechargeOrder.setRebateType(0);
-        rechargeOrder.setRebateAmount(0L);
-        rechargeOrder.setRebateState(Byte.valueOf("0"));
-        rechargeOrder.setRebateTime(new Date());
-        rechargeOrder.setCustomerIp(placeOrderRequest.getCustomerIp());
-        rechargeOrder.setMerchantIp("18.22.33.44");
-        rechargeOrder.setNotifyUrl(placeOrderRequest.getNotifyUrl());
-        rechargeOrder.setNotifyTimes(0);
-        rechargeOrder.setNotifyInterval("30");
         rechargeOrder.setAttach(placeOrderRequest.getAttach());
         rechargeOrder.setSrcPlatform("未知");
-//        rechargeOrder.
+        rechargeOrder.setRebateType(0);
+        rechargeOrder.setCustomerIp(placeOrderRequest.getCustomerIp());
+
+        rechargeOrder.setNotifyUrl(placeOrderRequest.getNotifyUrl());
+        rechargeOrder.setNotifyTimes(NOTIFYNUM);
+        rechargeOrder.setNotifyInterval("30");
+        rechargeOrder.setNotifyState(0);//未通知
+        rechargeOrder.setDiscountProvinceCode(qcoinRebateConfig.getProvinceCode());//根据上面查询所得
+        rechargeOrder.setDiscountRate(qcoinRebateConfig.getDiscountRate());//根据上面查询所得
         return rechargeOrder;
     }
+
+
+    private String getDesc(Integer businessType,Long charegeUnitValue,Long chargeNum){
+        try {
+            DictionaryBusinessInfo info = businessTypeLocalCache.getBusinessType(businessType);
+            return info.getName()+"充值"+charegeUnitValue*chargeNum+"元";
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        return "";
+    }
+
 }

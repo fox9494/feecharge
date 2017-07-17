@@ -7,7 +7,7 @@ import com.business.api.vo.PlaceOrderRequest;
 /**
  * Created by chenll on 2017/7/6.
  */
-public interface PlaceOrderService {
+public interface PlaceOrderApiService {
 
     /**
      * 处理接单流程

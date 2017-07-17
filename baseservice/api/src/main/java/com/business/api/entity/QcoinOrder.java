@@ -110,12 +110,6 @@ public class QcoinOrder extends BaseEntity{
     private Date handleTime;
 
     /**
-     * 备注信息
-     */
-    @Column(name = "channel_result")
-    private String channelResult;
-
-    /**
      * 是否允许拆单:0不允许；1允许
      */
     @Column(name = "allow_split")
@@ -458,23 +452,6 @@ public class QcoinOrder extends BaseEntity{
         this.handleTime = handleTime;
     }
 
-    /**
-     * 获取备注信息
-     *
-     * @return channel_result - 备注信息
-     */
-    public String getChannelResult() {
-        return channelResult;
-    }
-
-    /**
-     * 设置备注信息
-     *
-     * @param channelResult 备注信息
-     */
-    public void setChannelResult(String channelResult) {
-        this.channelResult = channelResult;
-    }
 
     /**
      * 获取是否允许拆单:0不允许；1允许

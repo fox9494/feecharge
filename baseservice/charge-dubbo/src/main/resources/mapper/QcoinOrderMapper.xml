@@ -23,7 +23,6 @@
     <result column="customer_ip" jdbcType="VARCHAR" property="customerIp" />
     <result column="handle_state" jdbcType="INTEGER" property="handleState" />
     <result column="handle_time" jdbcType="TIMESTAMP" property="handleTime" />
-    <result column="channel_result" jdbcType="VARCHAR" property="channelResult" />
     <result column="allow_split" jdbcType="INTEGER" property="allowSplit" />
     <result column="allow_delay" jdbcType="INTEGER" property="allowDelay" />
     <result column="match_state" jdbcType="INTEGER" property="matchState" />

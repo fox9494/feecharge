@@ -13,7 +13,7 @@ import java.util.List;
  * Created by chenll on 2017/7/4.
  */
 @Component
-public class MerchantApplyBusinessServiceImpl {
+public class MerchantApplyBusinessService {
 
     @Autowired
     private MerchantApplyBusinessMapper merchantApplyBusinessMapper;

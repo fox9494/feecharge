@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
  * Created by chenll on 2017/7/6.
  */
 @Component
-public class AccountFundFlowServiceImpl {
+public class AccountFundFlowService {
 
     @Autowired
     private AccountFundFlowMapper accountFundFlowMapper;

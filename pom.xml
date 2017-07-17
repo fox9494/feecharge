@@ -13,6 +13,7 @@
         <module>generator-mybatis</module>
         <module>delivery</module>
         <module>baseservice</module>
+        <module>callback</module>
     </modules>
 
     <properties>

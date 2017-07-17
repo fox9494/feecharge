@@ -12,9 +12,9 @@
         </plugin>
 
         <jdbcConnection driverClass="com.mysql.jdbc.Driver"
-                        connectionURL="jdbc:mysql://localhost:3306/test"
+                        connectionURL="jdbc:mysql://112.74.40.62:3306/chongzhi"
                         userId="root"
-                        password="root">
+                        password="rootRoot8!">
         </jdbcConnection>
 
         <javaModelGenerator targetPackage="com.business.acceptor.entity" targetProject="D:\projects\充值系统\feecharge\generator-mybatis\src\main\java"/>
@@ -23,7 +23,11 @@
 
         <javaClientGenerator targetPackage="com.business.acceptor.dao" targetProject="D:\projects\充值系统\feecharge\generator-mybatis\src\main\java" type="XMLMAPPER" />
 
-        <table tableName="%" >
+       <!-- <table tableName="%" >
+            <generatedKey column="id" sqlStatement="Mysql" identity="true"/>
+        </table>-->
+
+        <table tableName="ip_address" >
             <generatedKey column="id" sqlStatement="Mysql" identity="true"/>
         </table>
     </context>

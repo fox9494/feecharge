@@ -153,34 +153,11 @@ public class RechargeOrder extends BaseEntity implements Serializable{
     private Integer rebateType;
 
     /**
-     * 返佣金额(厘）
-     */
-    @Column(name = "rebate_amount")
-    private Long rebateAmount;
-
-    /**
-     * 返佣状态，默认是0返佣
-     */
-    @Column(name = "rebate_state")
-    private Byte rebateState;
-
-    /**
-     * 返佣时间
-     */
-    @Column(name = "rebate_time")
-    private Date rebateTime;
-
-    /**
      * 下单用户IP地址
      */
     @Column(name = "customer_ip")
     private String customerIp;
 
-    /**
-     * 商户下单IP
-     */
-    @Column(name = "merchant_ip")
-    private String merchantIp;
 
     /**
      * 商户通知地址
@@ -710,59 +687,6 @@ public class RechargeOrder extends BaseEntity implements Serializable{
         this.rebateType = rebateType;
     }
 
-    /**
-     * 获取返佣金额(厘）
-     *
-     * @return rebate_amount - 返佣金额(厘）
-     */
-    public Long getRebateAmount() {
-        return rebateAmount;
-    }
-
-    /**
-     * 设置返佣金额(厘）
-     *
-     * @param rebateAmount 返佣金额(厘）
-     */
-    public void setRebateAmount(Long rebateAmount) {
-        this.rebateAmount = rebateAmount;
-    }
-
-    /**
-     * 获取返佣状态，默认是0返佣
-     *
-     * @return rebate_state - 返佣状态，默认是0返佣
-     */
-    public Byte getRebateState() {
-        return rebateState;
-    }
-
-    /**
-     * 设置返佣状态，默认是0返佣
-     *
-     * @param rebateState 返佣状态，默认是0返佣
-     */
-    public void setRebateState(Byte rebateState) {
-        this.rebateState = rebateState;
-    }
-
-    /**
-     * 获取返佣时间
-     *
-     * @return rebate_time - 返佣时间
-     */
-    public Date getRebateTime() {
-        return rebateTime;
-    }
-
-    /**
-     * 设置返佣时间
-     *
-     * @param rebateTime 返佣时间
-     */
-    public void setRebateTime(Date rebateTime) {
-        this.rebateTime = rebateTime;
-    }
 
     /**
      * 获取下单用户IP地址
@@ -782,23 +706,6 @@ public class RechargeOrder extends BaseEntity implements Serializable{
         this.customerIp = customerIp;
     }
 
-    /**
-     * 获取商户下单IP
-     *
-     * @return merchant_ip - 商户下单IP
-     */
-    public String getMerchantIp() {
-        return merchantIp;
-    }
-
-    /**
-     * 设置商户下单IP
-     *
-     * @param merchantIp 商户下单IP
-     */
-    public void setMerchantIp(String merchantIp) {
-        this.merchantIp = merchantIp;
-    }
 
     /**
      * 获取商户通知地址

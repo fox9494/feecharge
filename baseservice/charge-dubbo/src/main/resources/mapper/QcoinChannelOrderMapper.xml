@@ -8,7 +8,7 @@
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="channel_order_no" jdbcType="VARCHAR" property="channelOrderNo" />
     <result column="order_no" jdbcType="VARCHAR" property="orderNo" />
-    <result column="mer_account" jdbcType="VARCHAR" property="merAccount" />
+    <result column="merchant_account" jdbcType="VARCHAR" property="merchantAccount" />
     <result column="mer_order_no" jdbcType="VARCHAR" property="merOrderNo" />
     <result column="channel_id" jdbcType="INTEGER" property="channelId" />
     <result column="partner_order_no" jdbcType="VARCHAR" property="partnerOrderNo" />
