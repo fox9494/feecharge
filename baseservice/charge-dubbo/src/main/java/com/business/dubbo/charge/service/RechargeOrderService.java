@@ -22,4 +22,18 @@ public class RechargeOrderService {
         example.createCriteria().andEqualTo("merchantOrderNo",merchantOrderNo).andEqualTo("merchantAccount",merchantAccount);
         return rechargeOrderMapper.selectCountByExample(example);
     }
+
+    public void updateStatus(String orderNo,Integer status){
+        RechargeOrder order = new RechargeOrder();
+        order.setOrderNo(orderNo);
+        order =  rechargeOrderMapper.selectOne(order);
+        order.setOrderState(status);
+        rechargeOrderMapper.updateByPrimaryKey(order);
+
+    }
+    public RechargeOrder findByOrderNo(String orderNo){
+        RechargeOrder order = new RechargeOrder();
+        order.setOrderNo(orderNo);
+        return rechargeOrderMapper.selectOne(order);
+    }
 }

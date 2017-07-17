@@ -31,7 +31,7 @@ public class HttpUtil {
 
     private static PoolingHttpClientConnectionManager connMgr;
     private static RequestConfig requestConfig;
-    private static final int MAX_TIMEOUT = 7000;
+    private static final int MAX_TIMEOUT = 10000;
     //线程安全的
     private static  CloseableHttpClient httpclient;
 
@@ -40,7 +40,7 @@ public class HttpUtil {
         // 设置连接池
         connMgr = new PoolingHttpClientConnectionManager();
         // 设置连接池大小
-        connMgr.setMaxTotal(200);
+        connMgr.setMaxTotal(500);
         connMgr.setDefaultMaxPerRoute(10);
 
         RequestConfig.Builder configBuilder = RequestConfig.custom();

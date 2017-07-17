@@ -12,9 +12,11 @@ import com.business.dubbo.charge.channel.ChannelBusinessService;
 import com.business.dubbo.charge.dao.QcoinChannelOrderMapper;
 import com.business.dubbo.charge.dao.QcoinOrderMapper;
 import com.business.dubbo.charge.task.ChannelQueryOrderTask;
+import com.business.dubbo.charge.task.NotifyMerchantTask;
 import com.business.dubbo.charge.task.QcoinChannelOrderResultTask;
 import com.business.dubbo.charge.utils.IDGenerator;
 import com.business.dubbo.charge.utils.ThreadPoolManager;
+import com.sun.org.apache.xpath.internal.operations.Or;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Date;
@@ -42,21 +44,33 @@ public class DispatcherService {
     @Autowired
     private QcoinChannelOrderService qcoinChannelOrderService;
 
+    @Autowired
+    private QcoinOrderService qcoinOrderService;
+
+    @Autowired
+    private RechargeOrderService rechargeOrderService;
+
+    @Autowired
+    private MerchantAccountInfoService merchantAccountInfoService;
+
     public void dispathcer(RechargeOrder rechargeOrder){
 
         //Q币业务
      if  (BusinessType.QICON.getValue().intValue()==rechargeOrder.getBusinessType()){
-         qcoinOrderMapper.insert(this.generateQcoinOrder(rechargeOrder));
+         QcoinOrder qcoinOrder = this.generateQcoinOrder(rechargeOrder);
+         qcoinOrderMapper.insert(qcoinOrder);
 
          List<QcoinMerchantUsableChannel> list = qcoinChannelService.findBy(rechargeOrder.getMerchantAccount(), null,StatusType.NORMAL.getValue());
          if (!list.isEmpty()){
+             QcoinChannelOrder qcoinChannelOrder=null;
+             qcoinOrderService.updateStatus(qcoinOrder.getOrderNo(),OrderStatus.PROCESSING.getValue());
              for (QcoinMerchantUsableChannel qcoinMerchantUsableChannel:list) {
                  PartnerChannel partnerChannel = partnerChannelService.findByChannel(qcoinMerchantUsableChannel.getChannelId());
                  if (StatusType.INVALID.getValue().intValue()==partnerChannel.getState().intValue()){
                      continue;
                  }
                  //插入q渠道表
-                 QcoinChannelOrder qcoinChannelOrder = this.generateQcoinChannelOrder(rechargeOrder, qcoinMerchantUsableChannel);
+                 qcoinChannelOrder = this.generateQcoinChannelOrder(rechargeOrder, qcoinMerchantUsableChannel);
                  qcoinChannelOrderMapper.insert(qcoinChannelOrder);
 
                  ChannelBusinessService channelBusinessService = ChannelAdaptor.getChannel(qcoinMerchantUsableChannel.getChannelId());
@@ -69,65 +83,90 @@ public class DispatcherService {
                  Long firstCheckTime = System.currentTimeMillis();
                  ChannelPlaceOrderResponse response = channelBusinessService.requestChannelPlaceOrder(request);
 
-                 if (OrderStatus.SUCCESS.getValue()==response.getOrderVO().getOrderStatus()){//调用渠道成功
-
-                     break;//成功终止调下一渠道
+                 if (OrderStatus.SUCCESS.getValue()==response.getOrderVO().getOrderStatus()){
+                     this.responseSyncSucessOnChannel(qcoinChannelOrder,response);
+                     break;//调用渠道成功终止不调用下一渠道
                  }
                  if (OrderStatus.FAIL.getValue() == response.getOrderVO().getOrderStatus()){
-
+                     this.responseSyncFailOnChannel(qcoinChannelOrder,response);
                  }
                  if (OrderStatus.PROCESSING.getValue()==response.getOrderVO().getOrderStatus()){//充值中，启动定时任务查单或等待回调
-
-
                      //启动线程查单
                      ThreadPoolManager.getInstance().submit(new ChannelQueryOrderTask(qcoinChannelOrderService, firstCheckTime, rechargeOrder.getMerchantAccount(),
                              qcoinChannelOrder.getChannelOrderNo(), qcoinMerchantUsableChannel.getChannelId()));
 
+                     //启动线程查询异步结果，基于回调和查单的结果
                      Future<QcoinChannelOrder> result = ThreadPoolManager.getInstance().submit(new QcoinChannelOrderResultTask(qcoinChannelOrderService,
                              rechargeOrder.getMerchantAccount(),qcoinChannelOrder.getChannelOrderNo()));
-
                      try {
                          QcoinChannelOrder orderResult = result.get();
                          if (OrderStatus.SUCCESS.getValue()==orderResult.getOrderState()){//调用渠道成功
-
+                             this.responseAsyncSucessOnChannel(orderResult);
                              break;//成功终止调下一渠道
                          }
                          if (OrderStatus.FAIL.getValue() == orderResult.getOrderState()){
-
+                             this.responseAsyncFailOnChannel(orderResult);
                          }
                      } catch (InterruptedException e) {
                          e.printStackTrace();
                      } catch (ExecutionException e) {
                          e.printStackTrace();
                      }
-
-
                  }
-
              }
 
              //所有渠道都走完了，查询一次状态，主要处理失败
+             QcoinChannelOrder entity = qcoinChannelOrderService.findByAccountAndOrderNo(rechargeOrder.getMerchantAccount(), qcoinChannelOrder.getChannelOrderNo());
+             if (entity.getOrderState() == OrderStatus.FAIL.getValue()){
+                 ThreadPoolManager.getInstance().execute(new NotifyMerchantTask(rechargeOrderService,qcoinChannelOrder.getOrderNo()));
+                 //加款
+                 MerchantAccountInfo merchantAccountInfo = merchantAccountInfoService.findByAccount(rechargeOrder.getMerchantAccount());
+                 merchantAccountInfoService.updateBalance(rechargeOrder.getMerchantAccount(),rechargeOrder.getDiscountAmount());
+             }
+
          }else{//没有渠道可用当失败处理
-            //主订单修改状态
-             //接单表修改状态
-             //退回扣款
-             //回调下游
+
+             qcoinOrderService.updateStatus(qcoinOrder.getOrderNo(),OrderStatus.FAIL.getValue());
+             rechargeOrderService.updateStatus(qcoinOrder.getOrderNo(),OrderStatus.FAIL.getValue());
+             ThreadPoolManager.getInstance().execute(new NotifyMerchantTask(rechargeOrderService,rechargeOrder.getOrderNo()));
+             //加款
+             MerchantAccountInfo merchantAccountInfo = merchantAccountInfoService.findByAccount(rechargeOrder.getMerchantAccount());
+             merchantAccountInfoService.updateBalance(rechargeOrder.getMerchantAccount(),rechargeOrder.getDiscountAmount());
          }
      }
 
     }
 
-    private void sucessOnChannel(ChannelPlaceOrderResponse response){
-//        qcoinChannelOrderService.updatePartnerOrderNo();
-
-        //主订单修改状态
-        //接单表修改状态
-        //回调商户提供的url
+    //处理同步的结果
+    private void responseSyncSucessOnChannel(QcoinChannelOrder qcoinChannelOrder,ChannelPlaceOrderResponse response){
+        responseSyncFailOnChannel(qcoinChannelOrder,response);
+        ThreadPoolManager.getInstance().execute(new NotifyMerchantTask(rechargeOrderService,qcoinChannelOrder.getOrderNo()));
     }
 
-    private void faileOnChannel(ChannelPlaceOrderResponse response){
-        //获取下一渠道
+    private void responseSyncFailOnChannel(QcoinChannelOrder qcoinChannelOrder,ChannelPlaceOrderResponse response){
+        qcoinChannelOrderService.updateByPlaceOrderResponse(qcoinChannelOrder,response);
+        qcoinOrderService.updateStatus(qcoinChannelOrder);
+        rechargeOrderService.updateStatus(qcoinChannelOrder.getOrderNo(),qcoinChannelOrder.getOrderState());
     }
+
+    /**
+     * 异步结果的处理
+     * @param qcoinChannelOrder
+     */
+    private void responseAsyncSucessOnChannel(QcoinChannelOrder qcoinChannelOrder){
+        responseAsyncFailOnChannel(qcoinChannelOrder);
+        ThreadPoolManager.getInstance().execute(new NotifyMerchantTask(rechargeOrderService,qcoinChannelOrder.getOrderNo()));
+    }
+
+    /**
+     * 异步结果的处理
+     * @param qcoinChannelOrder
+     */
+    private void responseAsyncFailOnChannel(QcoinChannelOrder qcoinChannelOrder){
+        qcoinOrderService.updateStatus(qcoinChannelOrder);
+        rechargeOrderService.updateStatus(qcoinChannelOrder.getOrderNo(),qcoinChannelOrder.getOrderState());
+    }
+
 
     private QcoinChannelOrder generateQcoinChannelOrder(RechargeOrder rechargeOrder, QcoinMerchantUsableChannel qcoinMerchantUsableChannel){
         QcoinChannelOrder qcoinChannelOrder = new QcoinChannelOrder();

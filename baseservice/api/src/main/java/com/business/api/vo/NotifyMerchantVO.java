@@ -3,26 +3,24 @@ package com.business.api.vo;
 import java.util.Date;
 
 /**
- * Created by chenll on 2017/7/16.
+ * Created by chenll on 2017/7/17.
  */
-public class OrderVO {
+public class NotifyMerchantVO extends BaseVO {
 
     private String merchantAccount;
 
     private Integer businessType;
 
-    //接单系统产生的orderNO
+    private String merchantOrderNo;
+
+    private Date merchantRequestTime;
+
     private String orderNo;
 
-    //订单产生的时间
     private Date orderTime;
-
-    //上游渠道产生的订单号
-    private String partnerOrderNo;
 
     private Long orderAmount;
 
-    //应付金额
     private Long payAmount;
 
     private Long discountAmount;
@@ -31,9 +29,11 @@ public class OrderVO {
 
     private String orderDetail;
 
-    private Integer orderStatus;
+    private Integer orderState;
 
     private String attach;
+
+    private String sign;
 
     public String getMerchantAccount() {
         return merchantAccount;
@@ -51,6 +51,22 @@ public class OrderVO {
         this.businessType = businessType;
     }
 
+    public String getMerchantOrderNo() {
+        return merchantOrderNo;
+    }
+
+    public void setMerchantOrderNo(String merchantOrderNo) {
+        this.merchantOrderNo = merchantOrderNo;
+    }
+
+    public Date getMerchantRequestTime() {
+        return merchantRequestTime;
+    }
+
+    public void setMerchantRequestTime(Date merchantRequestTime) {
+        this.merchantRequestTime = merchantRequestTime;
+    }
+
     public String getOrderNo() {
         return orderNo;
     }
@@ -65,14 +81,6 @@ public class OrderVO {
 
     public void setOrderTime(Date orderTime) {
         this.orderTime = orderTime;
-    }
-
-    public String getPartnerOrderNo() {
-        return partnerOrderNo;
-    }
-
-    public void setPartnerOrderNo(String partnerOrderNo) {
-        this.partnerOrderNo = partnerOrderNo;
     }
 
     public Long getOrderAmount() {
@@ -99,18 +107,6 @@ public class OrderVO {
         this.discountAmount = discountAmount;
     }
 
-    public String getOrderDetail() {
-        return orderDetail;
-    }
-
-    public void setOrderDetail(String orderDetail) {
-        this.orderDetail = orderDetail;
-    }
-
-    public Integer getOrderStatus() {
-        return orderStatus;
-    }
-
     public Long getSuccessAmount() {
         return successAmount;
     }
@@ -119,8 +115,20 @@ public class OrderVO {
         this.successAmount = successAmount;
     }
 
-    public void setOrderStatus(Integer orderStatus) {
-        this.orderStatus = orderStatus;
+    public String getOrderDetail() {
+        return orderDetail;
+    }
+
+    public void setOrderDetail(String orderDetail) {
+        this.orderDetail = orderDetail;
+    }
+
+    public Integer getOrderState() {
+        return orderState;
+    }
+
+    public void setOrderState(Integer orderState) {
+        this.orderState = orderState;
     }
 
     public String getAttach() {
@@ -129,5 +137,13 @@ public class OrderVO {
 
     public void setAttach(String attach) {
         this.attach = attach;
+    }
+
+    public String getSign() {
+        return sign;
+    }
+
+    public void setSign(String sign) {
+        this.sign = sign;
     }
 }

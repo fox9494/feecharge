@@ -3,7 +3,7 @@ package com.business.api.vo;
 /**
  * Created by chenll on 2017/7/15.
  */
-public class ChannelPlaceOrderResponse {
+public class ChannelPlaceOrderResponse extends BaseVO{
 
     private String resultCode;
 

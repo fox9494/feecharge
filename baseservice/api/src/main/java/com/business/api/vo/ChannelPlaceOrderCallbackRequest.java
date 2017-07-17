@@ -3,7 +3,7 @@ package com.business.api.vo;
 /**
  * Created by chenll on 2017/7/16.
  */
-public class ChannelPlaceOrderCallbackRequest {
+public class ChannelPlaceOrderCallbackRequest extends BaseVO{
 
     private PlaceOrderCallbackVO placeOrderCallbackVO;
 
