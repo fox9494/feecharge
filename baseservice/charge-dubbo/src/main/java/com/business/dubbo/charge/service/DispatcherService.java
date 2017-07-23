@@ -18,6 +18,7 @@ import com.business.dubbo.charge.utils.IDGenerator;
 import com.business.dubbo.charge.utils.ThreadPoolManager;
 import com.sun.org.apache.xpath.internal.operations.Or;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
@@ -53,6 +54,7 @@ public class DispatcherService {
     @Autowired
     private MerchantAccountInfoService merchantAccountInfoService;
 
+    @Transactional
     public void dispathcer(RechargeOrder rechargeOrder){
 
         //Q币业务

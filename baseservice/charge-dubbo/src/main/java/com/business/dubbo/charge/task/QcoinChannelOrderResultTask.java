@@ -25,10 +25,10 @@ public class QcoinChannelOrderResultTask implements Callable<QcoinChannelOrder> 
     private QcoinChannelOrderService qcoinChannelOrderService;
 
     //最长查询时间
-    private Long maxQueryTime;
+    private Long maxQueryTime=1000*60L*15;
 
     //查询间隔时间
-    private Long retryInterval;
+    private Long retryInterval=10000L;
 
     //首次查单时间
     private Long firstTime;
