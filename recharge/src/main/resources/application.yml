@@ -1,0 +1,18 @@
+####这个文件默认从classpath根目录或者当前目录加载
+## 代码使用这个获取@Value(value = "${app.name}")
+###注意后面的值有个空格
+##可以对特定环境定义profile
+app:
+  name: acceptor
+
+server:
+  port: 8080
+
+spring:
+   datasource:
+     url: jdbc:mysql://112.74.40.62:3306/chongzhi
+     username: root
+     password: rootRoot8!
+     type: com.zaxxer.hikari.HikariDataSource
+     driver-class-name: com.mysql.jdbc.Driver
+

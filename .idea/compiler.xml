@@ -22,12 +22,9 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="true" />
-        <module name="acceptor" />
-        <module name="api" />
-        <module name="callback" />
         <module name="charge-dubbo" />
-        <module name="delivery" />
         <module name="generator-mybatis" />
+        <module name="recharge" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel target="1.8">
@@ -40,6 +37,7 @@
       <module name="delivery" target="1.5" />
       <module name="feecharge" target="1.5" />
       <module name="generator-mybatis" target="1.5" />
+      <module name="recharge" target="1.5" />
     </bytecodeTargetLevel>
   </component>
 </project>

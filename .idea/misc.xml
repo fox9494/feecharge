@@ -11,7 +11,12 @@
     </option>
     <option name="ignoredFiles">
       <set>
+        <option value="$PROJECT_DIR$/acceptor/pom.xml" />
+        <option value="$PROJECT_DIR$/baseservice/api/pom.xml" />
         <option value="$PROJECT_DIR$/baseservice/chargeservice/pom.xml" />
+        <option value="$PROJECT_DIR$/baseservice/pom.xml" />
+        <option value="$PROJECT_DIR$/callback/pom.xml" />
+        <option value="$PROJECT_DIR$/delivery/pom.xml" />
       </set>
     </option>
   </component>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.business.recharge.dao.QcoinMerchantUsableChannelMapper">
+  <resultMap id="BaseResultMap" type="com.business.recharge.entity.QcoinMerchantUsableChannel">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="merchant_account" jdbcType="VARCHAR" property="merchantAccount" />
+    <result column="channel_id" jdbcType="INTEGER" property="channelId" />
+    <result column="part_go_next" jdbcType="INTEGER" property="partGoNext" />
+    <result column="fail_go_next" jdbcType="INTEGER" property="failGoNext" />
+    <result column="min_amount" jdbcType="BIGINT" property="minAmount" />
+    <result column="max_amount" jdbcType="BIGINT" property="maxAmount" />
+    <result column="state" jdbcType="INTEGER" property="state" />
+    <result column="split_type" jdbcType="INTEGER" property="splitType" />
+    <result column="split_rule" jdbcType="VARCHAR" property="splitRule" />
+    <result column="allow_unsure_province" jdbcType="INTEGER" property="allowUnsureProvince" />
+    <result column="allow_province" jdbcType="VARCHAR" property="allowProvince" />
+    <result column="order_sort" jdbcType="INTEGER" property="orderSort" />
+  </resultMap>
+</mapper>
