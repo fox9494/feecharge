@@ -29,7 +29,7 @@
         <mapper.version>3.4.0</mapper.version>
         <pagehelper.version>4.1.1</pagehelper.version>
         <common-lang3.version>3.4</common-lang3.version>
-        <kafka-client.version>0.11.0.0</kafka-client.version>
+        <kafka-client.version>0.11.0.2</kafka-client.version>
         <slf4j.version>1.7.22</slf4j.version>
     </properties>
 
